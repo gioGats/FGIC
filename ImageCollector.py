@@ -4,6 +4,7 @@ from PIL import Image
 import os
 import pickle
 
+
 class ImageCollector(object):
     def __init__(self, target_directory=None):
         self.target = target_directory
@@ -18,10 +19,10 @@ class ImageCollector(object):
             os.remove(image_path)
             im.save(name + '.jpg')
 
-    def convert_all(self, directory):
+    def convert_all(self, directory=None):
         for im in os.listdir(directory):
             try:
-                process(im)
+                self.convert(im)
             except Exception:
                 os.remove(im)
 
@@ -36,9 +37,12 @@ class ImageCollector(object):
         return urls
 
     def download_url(self, url, dest):
-        urlretrieve(url, dest)
+        try:
+            urlretrieve(url, dest)
+        except Exception as e:
+            print(e)
 
-    def increment_name(self, base, directory):
+    def increment_name(self, base, directory=None):
         i = 0
         existing = os.listdir(directory)
         while True:
@@ -74,6 +78,14 @@ class MidCarImageCollector(ImageCollector):
 
 
 def initial_testing():
+    ic = ImageCollector('')
+    print(ic.increment_name('cars_run.sh'))
+    urls = ic.get_image_urls('cats', 10)
+    print(urls)
+    for u in urls:
+        name = ic.increment_name('cat.jpg')
+        ic.download_url(u, name)
+
 
 if __name__ == '__main__':
     initial_testing()
