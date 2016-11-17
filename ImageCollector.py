@@ -94,3 +94,4 @@ def initial_testing():
 if __name__ == '__main__':
     ic = MidCarImageCollector()
     ic.download()
+    # ISSUE Getting 403 errors
