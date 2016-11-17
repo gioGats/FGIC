@@ -1,10 +1,36 @@
-from bs4 import BeautifulSoup
-import requests
-import re
-import urllib2
+from PIL import Image
 import os
-import cookielib
-import json
+
+
+class ImageCollector(object):
+    def __init__(self, target_directory=None):
+        self.target = target_directory
+        os.chdir(target_directory)
+
+    def convert(self, image_path):
+        im = Image.open(image_path).convert('RGB')
+        if im.format != 'JPEG':
+            if len(image_path.split('.')) > 2:
+                raise ValueError('Bad filename split')
+            name = image_path.split('.')[0]
+            os.remove(image_path)
+            im.save(name + '.jpg')
+
+    def convert_all(self):
+        total = len(os.listdir('car_photos'))
+        i = 0
+        for td in os.listdir('car_photos'):
+            i += 1
+            for ip in os.listdir('car_photos/' + td):
+                try:
+                    process('car_photos/%s/%s' % (td, ip))
+                except Exception:
+                    os.remove('car_photos/%s/%s' % (td, ip))
+            print('\rProgress: %d of %d' % (i, total), end='')
+
+
+
+
 
 def main():
     i = 0
