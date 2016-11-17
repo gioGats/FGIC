@@ -14,13 +14,12 @@ def make_midcars_dict():
 
     midcars_dict = {}
     for f in os.listdir('/home/rgio/FGIC/midcars/car_photos'):
-        midcars_dict[f] = gauss(mu, sigma)
+        midcars_dict[f] = int(gauss(mu, sigma))
 
     with open('midcars_dict.pkl', 'wb') as f:
         pickle.dump(midcars_dict, f)
         f.close()
 
-    print(midcars_dict)
 
 if __name__ == '__main__':
     make_midcars_dict()

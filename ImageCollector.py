@@ -1,6 +1,8 @@
+from py_bing_search import PyBingImageSearch
+from urllib import urlretrieve
 from PIL import Image
 import os
-
+import pickle
 
 class ImageCollector(object):
     def __init__(self, target_directory=None):
@@ -16,85 +18,62 @@ class ImageCollector(object):
             os.remove(image_path)
             im.save(name + '.jpg')
 
-    def convert_all(self):
-        total = len(os.listdir('car_photos'))
+    def convert_all(self, directory):
+        for im in os.listdir(directory):
+            try:
+                process(im)
+            except Exception:
+                os.remove(im)
+
+    def get_image_urls(self, keyword, number):
+        API_KEY = '40E5RsqfihlGEm1ehQpKVfoBLntynFWkH7Uv+On0UM8'
+        bing_image = PyBingImageSearch(API_KEY, keyword)
+        #image_filters is optional
+        results = bing_image.search(limit=number, format='json')  # 1-50
+        urls = []
+        for i in results:
+            urls.append(i.media_url)
+        return urls
+
+    def download_url(self, url, dest):
+        urlretrieve(url, dest)
+
+    def increment_name(self, base, directory):
         i = 0
-        for td in os.listdir('car_photos'):
-            i += 1
-            for ip in os.listdir('car_photos/' + td):
-                try:
-                    process('car_photos/%s/%s' % (td, ip))
-                except Exception:
-                    os.remove('car_photos/%s/%s' % (td, ip))
-            print('\rProgress: %d of %d' % (i, total), end='')
+        existing = os.listdir(directory)
+        while True:
+            trial_name = base.split('.')[0] + str(i) + '.' + base.split('.')[1]
+            if trial_name not in existing:
+                return trial_name
+            else:
+                i += 1
 
 
-
-
-
-def main():
-    i = 0
-    total = len(os.listdir('car_photos'))
-    for d in os.listdir('car_photos'):
-        if d == '.DS_Store':
-            continue
-        td = 'car_photos/' + d
-        kw = d
-        #print('Keyword: %s\nNum Images: %d\nProgress: %d of %d' % (kw,len(os.listdir(td)), i, total))
-        print('Num Images: %d' % len(os.listdir(td)))
-        i += 1
-        if len(os.listdir(td)) < 0:
-            image_search(kw)
-
-def get_soup(url,header):
-    return BeautifulSoup(urllib2.urlopen(urllib2.Request(url,headers=header)),'html.parser')
-
-def image_search(keyword):
-    query = keyword # you can change the query for the image  here
-    image_type="ActiOn"
-    query= query.split()
-    query='+'.join(query)
-    url="https://www.google.com/search?q="+query+"&source=lnms&tbm=isch"
-    #print url
-    #add the directory for your image here
-    DIR="car_photos"
-    header={'User-Agent':"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36"
-    }
-    soup = get_soup(url,header)
-
-
-    ActualImages=[]# contains the link for Large original images, type of  image
-    for a in soup.find_all("div",{"class":"rg_meta"}):
-        link , Type =json.loads(a.text)["ou"]  ,json.loads(a.text)["ity"]
-        ActualImages.append((link,Type))
-
-    #print  "there are total" , len(ActualImages),"images"
-
-    if not os.path.exists(DIR):
-                os.mkdir(DIR)
-    DIR = os.path.join(DIR, query.split()[0])
-
-    if not os.path.exists(DIR):
-                os.mkdir(DIR)
-    ###print images
-    for i , (img , Type) in enumerate( ActualImages):
-        try:
-            req = urllib2.Request(img, headers={'User-Agent' : header})
-            raw_img = urllib2.urlopen(req).read()
-
-            cntr = len([i for i in os.listdir(DIR) if image_type in i]) + 1
-            #print cntr
-            if len(Type)==0:
-                f = open(os.path.join(DIR , image_type + "_"+ str(cntr)+".jpg"), 'wb')
-            else :
-                f = open(os.path.join(DIR , image_type + "_"+ str(cntr)+"."+Type), 'wb')
-
-
-            f.write(raw_img)
+class MidCarImageCollector(ImageCollector):
+    def __init__(self, target_directory='/home/rgio/FGIC/midcars/car_photos'):
+        super().__init__(target_directory)
+        with open('midcars_dict.pkl', 'rb') as f:
+            self.target_sizes = pickle.load(f)
             f.close()
-        except Exception as e:
-            pass
-            #print "could not load : "+img
-            #print e
 
-main()
+    def download(self):
+        total_dirs = len(os.listdir('/home/rgio/FGIC/midcars/car_photos'))
+        current_dir = 0
+        for f in os.listdir('/home/rgio/FGIC/midcars/car_photos'):
+            current_number = len(os.listdir('/home/rgio/FGIC/midcars/car_photos/%s' % f))
+            desired_number = self.target_sizes[f]
+            while current_number < desired_number:
+                for t in self.get_image_urls(f.replace('_', ' '), desired_number-current_number):
+                    self.download_url(t, self.increment_name('bing.jpg'))
+                self.convert_all('/home/rgio/FGIC/midcars/car_photos/%s' % f)
+                print('\rDirectory %.3d of %.3d | Image %.3d of %.3d' %
+                      (current_dir, total_dirs, current_number, desired_number), end='')
+                current_number = len(os.listdir('/home/rgio/FGIC/midcars/car_photos/%s' % f))
+            current_dir += 1
+        print()
+
+
+def initial_testing():
+
+if __name__ == '__main__':
+    initial_testing()
