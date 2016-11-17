@@ -3,7 +3,7 @@ from urllib.request import urlretrieve
 from PIL import Image
 import os
 import pickle
-
+import time
 
 class ImageCollector(object):
     def __init__(self, target_directory=None):
@@ -70,16 +70,13 @@ class MidCarImageCollector(ImageCollector):
             print('\rDirectory %.3d of %.3d | Image %.3d of %.3d' %
                       (current_dir, total_dirs, current_number, desired_number), end='')
             while current_number < desired_number:
-                """
                 for t in self.get_image_urls(f.replace('_', ' '), desired_number-current_number):
-                    break
                     self.download_url(t, self.increment_name('bing.jpg'))
                 self.convert_all('/home/rgio/FGIC/midcars/car_photos/%s' % f)
-                """
                 current_number = len(os.listdir('/home/rgio/FGIC/midcars/car_photos/%s' % f))
                 print('\rDirectory %.3d of %.3d | Image %.3d of %.3d' %
                       (current_dir, total_dirs, current_number, desired_number), end='')
-                break
+                time.sleep(1)
             current_dir += 1
         print()
 
