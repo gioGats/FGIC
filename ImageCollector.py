@@ -56,10 +56,10 @@ class ImageCollector(object):
 
 class MidCarImageCollector(ImageCollector):
     def __init__(self, target_directory='/home/rgio/FGIC/midcars/car_photos'):
-        super().__init__(target_directory)
         with open('midcars_dict.pkl', 'rb') as f:
             self.target_sizes = pickle.load(f)
             f.close()
+        super().__init__(target_directory)
 
     def download(self):
         total_dirs = len(os.listdir('/home/rgio/FGIC/midcars/car_photos'))
@@ -93,4 +93,5 @@ def initial_testing():
 
 
 if __name__ == '__main__':
-
+    ic = MidCarImageCollector()
+    ic.download()
