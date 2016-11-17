@@ -67,6 +67,8 @@ class MidCarImageCollector(ImageCollector):
         for f in os.listdir('/home/rgio/FGIC/midcars/car_photos'):
             current_number = len(os.listdir('/home/rgio/FGIC/midcars/car_photos/%s' % f))
             desired_number = self.target_sizes[f]
+            print('\rDirectory %.3d of %.3d | Image %.3d of %.3d' %
+                      (current_dir, total_dirs, current_number, desired_number), end='')
             while current_number < desired_number:
                 """
                 for t in self.get_image_urls(f.replace('_', ' '), desired_number-current_number):
@@ -74,9 +76,9 @@ class MidCarImageCollector(ImageCollector):
                     self.download_url(t, self.increment_name('bing.jpg'))
                 self.convert_all('/home/rgio/FGIC/midcars/car_photos/%s' % f)
                 """
+                current_number = len(os.listdir('/home/rgio/FGIC/midcars/car_photos/%s' % f))
                 print('\rDirectory %.3d of %.3d | Image %.3d of %.3d' %
                       (current_dir, total_dirs, current_number, desired_number), end='')
-                current_number = len(os.listdir('/home/rgio/FGIC/midcars/car_photos/%s' % f))
                 break
             current_dir += 1
         print()
