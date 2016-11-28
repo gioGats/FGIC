@@ -90,10 +90,10 @@ class MidCarImageCollector(ImageCollector):
             print('\rDirectory %.3d of %.3d | Image %.3d of %.3d' %
                   (current_dir, total_dirs, current_number, desired_number), end='')
             if current_number < desired_number:
-                f = open('/home/rgio/FGIC/midcars/image_urls/%s.txt' % f, 'w')
+                dump_file = open('/home/rgio/FGIC/midcars/image_urls/%s.txt' % f, 'w')
                 for t in self.get_image_urls(f.replace('_', ' '), 2 * (desired_number - current_number)):
-                    f.write('%s\n' % t)
-                f.close()
+                    dump_file.write('%s\n' % t)
+                dump_file.close()
             time.sleep(1)
             current_dir += 1
 
