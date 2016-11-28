@@ -92,9 +92,12 @@ class MidCarImageCollector(ImageCollector):
             if current_number < desired_number:
                 dump_file = open('/home/rgio/FGIC/midcars/image_urls/%s.txt' % f, 'w')
                 for t in self.get_image_urls(f.replace('_', ' '), 2 * (desired_number - current_number)):
-                    dump_file.write('%s\n' % t)
+                    try:
+                        dump_file.write('%s\n' % t)
+                    except UnicodeEncodeError:
+                        pass
                 dump_file.close()
-            time.sleep(1)
+            time.sleep(0.5)
             current_dir += 1
 
 
