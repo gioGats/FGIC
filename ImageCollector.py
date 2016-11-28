@@ -5,6 +5,7 @@ import os
 import pickle
 import time
 
+
 class ImageCollector(object):
     def __init__(self, target_directory=None):
         self.target = target_directory
@@ -30,7 +31,7 @@ class ImageCollector(object):
     def get_image_urls(self, keyword, number):
         API_KEY = '40E5RsqfihlGEm1ehQpKVfoBLntynFWkH7Uv+On0UM8'
         bing_image = PyBingImageSearch(API_KEY, keyword)
-        #image_filters is optional
+        # image_filters is optional
         results = bing_image.search(limit=number, format='json')  # 1-50
         urls = []
         for i in results:
@@ -68,9 +69,9 @@ class MidCarImageCollector(ImageCollector):
             current_number = len(os.listdir('/home/rgio/FGIC/midcars/car_photos/%s' % f))
             desired_number = self.target_sizes[f]
             print('\rDirectory %.3d of %.3d | Image %.3d of %.3d' %
-                      (current_dir, total_dirs, current_number, desired_number), end='')
+                  (current_dir, total_dirs, current_number, desired_number), end='')
             while current_number < desired_number:
-                for t in self.get_image_urls(f.replace('_', ' '), desired_number-current_number):
+                for t in self.get_image_urls(f.replace('_', ' '), 2 * (desired_number - current_number)):
                     self.download_url(t, self.increment_name('bing.jpg'))
                 self.convert_all('/home/rgio/FGIC/midcars/car_photos/%s' % f)
                 current_number = len(os.listdir('/home/rgio/FGIC/midcars/car_photos/%s' % f))
@@ -79,6 +80,22 @@ class MidCarImageCollector(ImageCollector):
                 time.sleep(1)
             current_dir += 1
         print()
+
+    def url_dump(self):
+        total_dirs = len(os.listdir('/home/rgio/FGIC/midcars/car_photos'))
+        current_dir = 0
+        for f in os.listdir('/home/rgio/FGIC/midcars/car_photos'):
+            current_number = len(os.listdir('/home/rgio/FGIC/midcars/car_photos/%s' % f))
+            desired_number = self.target_sizes[f]
+            print('\rDirectory %.3d of %.3d | Image %.3d of %.3d' %
+                  (current_dir, total_dirs, current_number, desired_number), end='')
+            if current_number < desired_number:
+                f = open('/home/rgio/FGIC/midcars/image_urls/%s.txt' % f, 'w')
+                for t in self.get_image_urls(f.replace('_', ' '), 2 * (desired_number - current_number)):
+                    f.write('%s\n' % t)
+                f.close()
+            time.sleep(1)
+            current_dir += 1
 
 
 def initial_testing():
@@ -93,5 +110,6 @@ def initial_testing():
 
 if __name__ == '__main__':
     ic = MidCarImageCollector()
-    ic.download()
+    # ic.download()
     # ISSUE Getting 403 errors
+    ic.url_dump()
