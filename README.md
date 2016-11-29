@@ -22,21 +22,28 @@ Stanford Cars:
 - TensorFlow v0.12
 - py_bing_search
 
-## File Structure from ~/
-/FGIC
-    /FGIC - git clone of this repository
-        /cars_run.sh - run to train on the cars dataset
-        /dogs_run.sh - run to train on the dogs dataset
-        /midcars_run.sh - run to train on the midcars dataset
-        /ImageCollector.py - class and main method for collecting images for midcars dataset. Currently not functioning.
-        /make_midcars_dict.py - implements sampling and dictionary creation described in Mid Range Boosting
-    /cars
-        /car_photos - sub-directories are named by class and contain example images of that class
-    /dogs
-        /dog_photos - sub-directories are named by class and contain example images of that class
-    /midcars
-        /car_photos - sub-directories are named by class and contain example images of that class
-        /image_urls - text files of image results to download for testing and debugging
-    /stanford_dogs_data - unprocessed data backup folder, request .tar.gz
-    /stanford_cars_data - unprocessed data backup folder, request .tar.gz
-/tensorflow - git clone of v0.12 release
+## File Structure
+~/
+    
+    /FGIC
+        /FGIC - git clone of this repository
+            
+            /cars_run.sh - run to train on the cars dataset
+            
+            /dogs_run.sh - run to train on the dogs dataset
+            
+            /midcars_run.sh - run to train on the midcars dataset
+            
+            /ImageCollector.py - class and main method for collecting images for midcars dataset. Currently not functioning.
+            
+            /make_midcars_dict.py - implements sampling and dictionary creation described in Mid Range Boosting
+        /cars
+            /car_photos - sub-directories are named by class and contain example images of that class
+        /dogs
+            /dog_photos - sub-directories are named by class and contain example images of that class
+        /midcars
+            /car_photos - sub-directories are named by class and contain example images of that class
+            /image_urls - text files of image results to download for testing and debugging
+        /stanford_dogs_data - unprocessed data backup folder, request .tar.gz
+        /stanford_cars_data - unprocessed data backup folder, request .tar.gz
+    /tensorflow - git clone of v0.12 release
