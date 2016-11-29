@@ -19,8 +19,10 @@ Stanford Cars:
 - 'midcars'
  
 ## Requirements
-- TensorFlow v0.12
-- py_bing_search
+- [TensorFlow v0.12](https://www.tensorflow.org/)
+- [py_bing_search](https://pypi.python.org/pypi/py-bing-search/0.2.6)
+- [Stanford Cars](http://ai.stanford.edu/~jkrause/cars/car_dataset.html)
+- [Stanford Dogs](http://vision.stanford.edu/aditya86/ImageNetDogs/)
 
 ## File Structure
 ~/
