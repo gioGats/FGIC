@@ -39,6 +39,7 @@ class ImageCollector(object):
         return urls
 
     def download_url(self, url, dest):
+        # ISSUE
         try:
             urlretrieve(url, dest)
         except Exception as e:
@@ -72,7 +73,7 @@ class MidCarImageCollector(ImageCollector):
                   (current_dir, total_dirs, current_number, desired_number), end='')
             while current_number < desired_number:
                 for t in self.get_image_urls(f.replace('_', ' '), 2 * (desired_number - current_number)):
-                    self.download_url(t, self.increment_name('bing.jpg'))
+                    self.download_url(t, self.increment_name('bing.jpg'))  # ISSUE
                 self.convert_all('/home/rgio/FGIC/midcars/car_photos/%s' % f)
                 current_number = len(os.listdir('/home/rgio/FGIC/midcars/car_photos/%s' % f))
                 print('\rDirectory %.3d of %.3d | Image %.3d of %.3d' %
@@ -113,6 +114,5 @@ def initial_testing():
 
 if __name__ == '__main__':
     ic = MidCarImageCollector()
-    # ic.download()
-    # ISSUE Getting 403 errors
+    # ic.download() # ISSUE Getting 403 errors
     ic.url_dump()
