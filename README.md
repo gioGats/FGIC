@@ -5,8 +5,8 @@ Specifically it attempts to equal or best the performance of their methods using
 Basic code requires TensorFlow v0.12 release.  More recent releases are not compatible.  See file structure section for proper environment setup.
 
 ## Current Best Performance:
-Stanford Dogs: 
-Stanford Cars:
+Stanford Dogs: 90% - 30 min training on GTX 760
+Stanford Cars: 60% - 3 hour training on GTX 760
 
 ## Methodology:
 ### Raw
