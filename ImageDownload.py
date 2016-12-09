@@ -1,21 +1,12 @@
-from PIL import Image
-from io import BytesIO
-import requests
+import urllib
 import os
 
 
-def download(url):
+def download(url, dest):
     try:
-        r = requests.get(url, timeout=1)
-        im = Image.open(BytesIO(r.content))
-        name = increment_name('bing.jpg')
-        im.save(name + '.jpg')
-    except requests.exceptions.Timeout:
-        print('Timeout: %s' % url)
+        urllib.request.urlretrieve(url, dest)
     except Exception as e:
         print(e)
-        print(r)
-        print()
 
 
 def increment_name(base, directory=None):
@@ -29,9 +20,10 @@ def increment_name(base, directory=None):
             i += 1
 
 if __name__ == '__main__':
-    f = open('BMW_M5_Sedan_2010.txt', 'r')
-    for line in f:
-        try:
-            download(line)
-        except Exception as e:
-            pass
+    for text_file_name in os.listdir('/home/rgio/FGIC/midcars/image_urls/'):
+        text_file = open(text_file_name, 'r')
+        dest_directory = text_file_name.replace('.txt', '')
+        for line in text_file:
+            dest_file_name = increment_name('bing.jpg')
+            dest = '/home/rgio/FGIC/midcars/car_photos/%s/%s' % (dest_directory, dest_file_name)
+            download(line, dest)
