@@ -21,7 +21,7 @@ def increment_name(base, directory=None):
 
 if __name__ == '__main__':
     for text_file_name in os.listdir('/home/rgio/FGIC/midcars/image_urls/'):
-        text_file = open(text_file_name, 'r')
+        text_file = open('/home/rgio/FGIC/midcars/image_urls/%s' % text_file_name, 'r')
         dest_directory = text_file_name.replace('.txt', '')
         for line in text_file:
             dest_file_name = increment_name('bing.jpg')
