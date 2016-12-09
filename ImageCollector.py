@@ -28,15 +28,18 @@ class ImageCollector(object):
             except Exception:
                 os.remove(im)
 
-    def get_image_urls(self, keyword, number):
-        API_KEY = '40E5RsqfihlGEm1ehQpKVfoBLntynFWkH7Uv+On0UM8'
-        bing_image = PyBingImageSearch(API_KEY, keyword)
-        # image_filters is optional
-        results = bing_image.search(limit=number, format='json')  # 1-50
-        urls = []
-        for i in results:
-            urls.append(i.media_url)
-        return urls
+    def get_image_urls(self, keyword, number, existing_urls=False):
+        if not existing_urls:
+            API_KEY = '40E5RsqfihlGEm1ehQpKVfoBLntynFWkH7Uv+On0UM8'
+            bing_image = PyBingImageSearch(API_KEY, keyword)
+            # image_filters is optional
+            results = bing_image.search(limit=number, format='json')  # 1-50
+            urls = []
+            for i in results:
+                urls.append(i.media_url)
+            return urls
+        else:
+            raise NotImplementedError
 
     def download_url(self, url, dest):
         # ISSUE
@@ -57,11 +60,13 @@ class ImageCollector(object):
 
 
 class MidCarImageCollector(ImageCollector):
-    def __init__(self, target_directory='/home/rgio/FGIC/midcars/car_photos'):
+    def __init__(self, target_directory='/home/rgio/FGIC/midcars/car_photos', existing_urls=False):
         with open('midcars_dict.pkl', 'rb') as f:
             self.target_sizes = pickle.load(f)
             f.close()
         super().__init__(target_directory)
+        if existing_urls:
+            raise NotImplementedError
 
     def download(self):
         total_dirs = len(os.listdir('/home/rgio/FGIC/midcars/car_photos'))
@@ -114,5 +119,5 @@ def initial_testing():
 
 if __name__ == '__main__':
     ic = MidCarImageCollector()
-    # ic.download() # ISSUE Getting 403 errors
-    ic.url_dump()
+    ic.download() # ISSUE Getting 403 errors
+    #ic.url_dump()
