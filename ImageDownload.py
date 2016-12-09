@@ -1,6 +1,7 @@
 from PIL import Image
 from io import BytesIO
 import requests
+import os
 
 
 def download(url):
@@ -11,6 +12,10 @@ def download(url):
         im.save(name + '.jpg')
     except requests.exceptions.Timeout:
         print('Timeout: %s' % url)
+    except Exception as e:
+        print(e)
+        print(r)
+        print()
 
 
 def increment_name(base, directory=None):
@@ -29,4 +34,4 @@ if __name__ == '__main__':
         try:
             download(line)
         except Exception as e:
-            print(e)
+            pass
