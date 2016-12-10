@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 cd ~/tensorflow
 
 python3 tensorflow/examples/image_retraining/retrain.py \
