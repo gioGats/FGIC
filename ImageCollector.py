@@ -1,5 +1,5 @@
 from py_bing_search import PyBingImageSearch
-from urllib.request import urlretrieve
+import urllib.request
 from PIL import Image
 import os
 import pickle
@@ -25,7 +25,8 @@ class ImageCollector(object):
         for im in os.listdir(directory):
             try:
                 self.convert(im)
-            except Exception:
+            except Exception as e:
+                print(e)
                 os.remove(im)
 
     def get_image_urls(self, keyword, number, existing_urls=False):
@@ -44,7 +45,7 @@ class ImageCollector(object):
     def download_url(self, url, dest):
         # ISSUE
         try:
-            urlretrieve(url, dest)
+            urllib.request.urlretrieve(url, dest)
         except Exception as e:
             print(e)
 
