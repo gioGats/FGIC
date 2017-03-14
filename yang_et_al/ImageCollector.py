@@ -11,7 +11,12 @@ class ImageCollector(object):
         self.target = target_directory
         if target_directory is not None:
             os.chdir(target_directory)
-
+            
+    def collect_images(self, keyword, number, directory=self.target_directory):
+        # TODO Test and debug this function
+        for url in self.get_image_urls(keyword, number):
+            self.download_url(url, self.increment_name('%s.jpg' % keyword, director=directory))
+            
     def convert(self, image_path):
         im = Image.open(image_path).convert('RGB')
         if im.format != 'JPEG':
@@ -22,6 +27,7 @@ class ImageCollector(object):
             im.save(name + '.jpg')
 
     def convert_all(self, directory=None):
+        # TODO Test and debug this function
         for im in os.listdir(directory):
             try:
                 self.convert(im)
