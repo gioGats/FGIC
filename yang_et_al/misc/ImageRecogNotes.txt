@@ -1,0 +1,38 @@
+python3 tensorflow/examples/image_retraining/retrain.py \
+--bottleneck_dir=/tf_files/bottlenecks \
+--model_dir=/tf_files/inception \
+--output_graph=/tf_files/retrained_graph.pb \
+--output_labels=/tf_files/retrained_labels.txt \
+--image_dir /tf_files/flower_photos
+
+python tensorflow/examples/image_retraining/retrain.py \
+--bottleneck_dir=/tf_files/bottlenecks \
+--model_dir=/tf_files/inception \
+--output_graph=/tf_files/retrained_graph.pb \
+--output_labels=/tf_files/retrained_labels.txt \
+--image_dir /tf_files/flower_photos
+
+
+/usr/bin/python
+/usr/bin/python3
+
+
+python3 tensorflow/examples/image_retraining/retrain.py \
+--bottleneck_dir=/home/rgio/FGIC/dogs/bottlenecks \
+--model_dir=/home/rgio/FGIC/dogs/inception \
+--output_graph=/home/rgio/FGIC/dogs/retrained_graph.pb \
+--output_labels=/home/rgio/FGIC/dogs/retrained_labels.txt \
+--image_dir /home/rgio/FGIC/dogs/dog_photos
+
+python3 tensorflow/examples/image_retraining/retrain.py \
+--bottleneck_dir=/home/rgio/FGIC/cars/bottlenecks \
+--model_dir=/home/rgio/FGIC/cars/inception \
+--output_graph=/home/rgio/FGIC/cars/retrained_graph.pb \
+--output_labels=/home/rgio/FGIC/cars/retrained_labels.txt \
+--image_dir /home/rgio/FGIC/cars/car_photos
+
+
+
+‘Member that terrible error in the dogs dataset because n02105855_2933.jpg wasn’t a JPEG, it was a PNG?  Yeah, me too.
+
+‘Member how much you hated the cars dataset people for their convoluted formatting?  Yeah, me too.
